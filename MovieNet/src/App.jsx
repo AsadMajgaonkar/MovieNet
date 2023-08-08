@@ -1,13 +1,13 @@
 import React from 'react'
-import Movies from '../components/movies'
-import Navbar from '../components/navbar'
+import Movies from '../src/components/movies'
+import Navbar from '../src/components/navbar'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Customers from '../src/components/customers'
 import Rentals from '../src/components/rentals'
 import NotFound from '../src/components/notFound'
 import LoginForm from '../src/components/loginForm'
 import Register from '../src/components/register'
-import MoviesForm from './components/moviesForm'
+import MoviesForm from '../src/components/moviesForm'
 
 const App = () => {
 

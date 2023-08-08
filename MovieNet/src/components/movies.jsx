@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import MovieTable from '../src/components/movieTable'
+import MovieTable from '../components/movieTable'
 import ListGroup from '../components/common/listGroup';
 import paginate from '../utils/paginate';
 import Pagination from '../components/pagination';
@@ -66,7 +66,7 @@ const Movies = () => {
 
   useEffect(()=>{
     axios.get(genresAPI)
-      .then(res=>setGenres([...res.data]))
+      .then(res=>setGenres([{_id:'0', name:'All Genre'},...res.data]))
       .catch(err=>console.log(err.messaage))
 
     axios.get(moviesAPI)

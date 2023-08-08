@@ -52,15 +52,17 @@ const MoviesForm = () => {
         dailyRentalRate: '',
     })
 
+    const doSubmit = async() => {
+        if(movie._id)
+            await axios.put(moviesAPI+'/'+movie._id, movie)
+        else 
+            await axios.post(moviesAPI, movie)
+        navigate('/movies')
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(movie._id){
-            axios.put(moviesAPI+'/'+movie._id, movie)
-                .then(()=>navigate('/movies'))
-        }
-        else 
-            axios.post(moviesAPI, movie).then(()=>navigate('/movies'))
-        
+        doSubmit();
     }
 
     return <div className=' d-flex flex-column '>
@@ -74,6 +76,7 @@ const MoviesForm = () => {
                 <div className="mb-3">
                     <label className="form-label">Genre</label>
                     <select className="form-select" onChange={(event) => setMovie({ ...movie, genre:{refID:event.target.value} })}>
+                        <option value='All Genre'></option>
                         {genres.map(g => <option
                             key={g._id}
                             value={g._id}
