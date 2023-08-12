@@ -11,8 +11,6 @@ const Genre = mongoose.model('genres', genreSchema);
 router.get('/', async (req,res)=>{
     const genre = await Genre.find();
     res.send(genre);
-    // res.send('get')
-
 })
 
 router.get('/:id', async(req,res)=>{
@@ -68,4 +66,3 @@ router.delete('/:id', async(req,res)=>{
 })
 
 exports.genreRoute = router;
-// module.exports.Genre = Genre

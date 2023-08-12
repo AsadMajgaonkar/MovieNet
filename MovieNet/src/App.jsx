@@ -1,30 +1,45 @@
-import React from 'react'
-import Movies from '../src/components/movies'
-import Navbar from '../src/components/navbar'
+import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Customers from '../src/components/customers'
-import Rentals from '../src/components/rentals'
-import NotFound from '../src/components/notFound'
-import LoginForm from '../src/components/loginForm'
-import Register from '../src/components/register'
-import MoviesForm from '../src/components/moviesForm'
+import { getUser } from './services/authService'
+import Movies from './components/movies'
+import Navbar from './components/navbar'
+import Customers from './components/customers'
+import Rentals from './components/rentals'
+import NotFound from './components/notFound'
+import LoginForm from './components/loginForm'
+import Register from './components/register'
+import MoviesForm from './components/moviesForm'
+import Logout from './components/logout'
 
 const App = () => {
-
+  const [user, setUser] = useState()
+  useEffect(() => {
+    try {
+      const {_id, name, email} = getUser();
+      setUser({
+        _id:_id, 
+        name:name, 
+        email:email
+      })
+    }
+    catch (err) { }
+  },[])
+  
   return <div>
-    <Navbar />
+    <Navbar user={user}/>
     <div className='content'>
-    <Routes>
-      <Route path='/' element={<Navigate to='/movies'/>}/>
-      <Route path='/movies' element={<Movies />}/>
-      <Route path='/movies/:id' element={<MoviesForm />}/>
-      <Route path='/customers' element={<Customers />}/>
-      <Route path='/rentals' element={<Rentals />}/>
-      <Route path='/login' element={<LoginForm />}/>
-      <Route path='/register' element={<Register />}/>
-      <Route path='/not-found' element={<NotFound />}/>
-      {/* <Route path='*' element={<Navigate to='not-found'/>}/> */}
-    </Routes>
+      <Routes>
+        <Route path='/' element={<Navigate to='/movies' />} />
+        <Route path='/movies' element={<Movies />} />
+        <Route path='/movies/:id' element={<MoviesForm />} />
+        <Route path='/customers' element={<Customers />} />
+        <Route path='/rentals' element={<Rentals />} />
+        <Route path='/login' element={<LoginForm />} />
+        <Route path='/logout' element={<Logout />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/not-found' element={<NotFound />} />
+        <Route path='*' element={<Navigate to='not-found' />} />
+      </Routes>
     </div>
   </div>
 }

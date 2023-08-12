@@ -1,20 +1,25 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../services/authService'
 
 const LoginForm = () => {
-    const [username, setUsername] = useState()
-    const [password, setPassword] = useState()
+    const [account, setAccount] = useState({
+        email:null,
+        password:null
+    })
     const [error, setError] = useState({})
+    const navigate = useNavigate()
 
     const validate = () => {
         const errors = {};
-        if (username == null)
-            errors.username = 'username required'
-        if (password == null)
+        if (account.email == null)
+            errors.email = 'username required'
+        if (account.password == null)
             errors.password = 'password required'
         return Object.keys(errors).length == 0 ? null : errors;
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
         const errors = validate()
         setError(errors || {})
@@ -24,22 +29,32 @@ const LoginForm = () => {
         }
 
         //api call
-        console.log('submitted');
+        try{
+            await loginUser(account)
+            window.location = '/'
+        }
+        catch(err){
+            if(err.response.status==400){
+                setError({...error,email:err.response.data})
+            }
+        }
     }
 
     return <div>
         <form onSubmit={(event) => handleSubmit(event)}>
             <div className="mb-3 col-6">
                 <label className="form-label">Email address</label>
-                <input type="email" className="form-control" onChange={(event) => setUsername(event.target.value)} autoFocus />
+                <input type="email" className="form-control" onChange={(event) => setAccount({...account, email:event.target.value})} autoFocus />
             </div>
-            {error.username && <div className="alert alert-danger col-3 p-2" role="alert"><p className='m-0'>{error.username}</p></div>}
+            {error.email && <div className="alert alert-danger col-3 p-2" role="alert"><p className='m-0'>{error.email}</p></div>}
             <div className="mb-3 col-6">
                 <label className="form-label">Password</label>
-                <input type="password" className="form-control" onChange={(event) => setPassword(event.target.value)} />
+                <input type="password" className="form-control" onChange={(event) => setAccount({...account, password:event.target.value})} />
             </div>
             {error.password && <div className="alert alert-danger col-3 p-2" role="alert"><p className='m-0'>{error.password}</p></div>}
-            <button type="submit" className="btn btn-primary" disabled={validate()==null?false:true}>Submit</button>
+            <button type="submit" className="btn btn-primary" 
+            disabled={validate()==null?false:true}
+            >Submit</button>
         </form>
     </div>
 }

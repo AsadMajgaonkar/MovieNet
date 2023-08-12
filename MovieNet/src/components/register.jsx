@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { createUser } from '../services/userService';
+import { loginWithJwt } from '../services/authService';
 
 const Register = () => {
     const [account, setAccount] = useState({
@@ -21,14 +23,24 @@ const Register = () => {
         return Object.keys(newError).length==0?null:newError;   
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
         
         const errors = validate();
         if(errors) return
 
         //api call
-        console.log('submitted');
+        try{
+            const response = await createUser(account);
+            loginWithJwt(response);
+            window.location = '/'
+        }
+        catch(err){
+            if(err && err.response.status==400){
+                setError({...error,email:err.response.data})
+            }
+        }
+        
     }
 
     return <div>
