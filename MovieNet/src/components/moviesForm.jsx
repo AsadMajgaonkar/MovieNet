@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { genresAPI, moviesAPI } from '../services/apiEndpoints';
-import axios from 'axios';
+import http from '../services/httpService';
 
 let movies = []
 let genres = []
@@ -12,15 +12,16 @@ const MoviesForm = () => {
     const navigate = useNavigate()
 
     const populateMovies = async () => {
-        const allGenres = await axios.get(genresAPI)
+        const allGenres = await http.get(genresAPI)
         genres = [...allGenres.data]
 
-        const allMovies = await axios.get(moviesAPI)
+        const allMovies = await http.get(moviesAPI)
         movies = [...allMovies.data]
+        
         setRefresh(true)
 
         if (id == 'new') return;
-
+        
         let updateMovie = movies.find(movie => movie._id == id)
         if (!updateMovie) return navigate('/not-found')
 
@@ -53,11 +54,17 @@ const MoviesForm = () => {
     })
 
     const doSubmit = async() => {
-        if(movie._id)
-            await axios.put(moviesAPI+'/'+movie._id, movie)
+        try{
+            if(movie._id)
+                await http.put(moviesAPI+'/'+movie._id, movie)
         else 
-            await axios.post(moviesAPI, movie)
+            await http.post(moviesAPI, movie)
         navigate('/movies')
+        }
+        catch(err){
+            if(err.response.status==401)
+                navigate('/login')
+        }
     }
 
     const handleSubmit = (event) => {

@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService'
+import { getUser } from '../services/authService';
 
 const LoginForm = () => {
+    if(getUser()) return <Navigate to='/'/>
+
     const [account, setAccount] = useState({
         email:null,
         password:null
     })
     const [error, setError] = useState({})
-    const navigate = useNavigate()
 
     const validate = () => {
         const errors = {};

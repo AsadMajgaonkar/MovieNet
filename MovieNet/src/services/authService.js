@@ -1,12 +1,12 @@
-import axios from 'axios';
+
 import jwtDecode from 'jwt-decode';
+import http from './httpService';
 
 const authAPI = 'http://localhost:3000/api/auth'
 
 export async function loginUser(user){
-    const response = await axios.post(authAPI,user)
-        .then((res)=>{return res})
-    localStorage.setItem('token', response.headers['x-auth-token'])     
+    const response = await http.post(authAPI,user)
+    localStorage.setItem('token', response.headers['x-auth-token']) 
 }
 
 export function logoutUser(){
@@ -19,5 +19,10 @@ export function loginWithJwt(response){
 
 export function getUser(){
     const jwt = localStorage.getItem('token')
-    return jwtDecode(jwt)
+    if(jwt) return jwtDecode(jwt)
+    else return null;
+}
+
+export function getJwt(){
+    return localStorage.getItem('token')
 }

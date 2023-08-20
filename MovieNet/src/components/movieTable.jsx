@@ -2,9 +2,11 @@ import React from 'react'
 import HeartIcon from '../components/common/hearIcon';
 import ArrowIcon from '../components/common/arrowIcon';
 import { Link } from 'react-router-dom';
+import { getUser } from '../services/authService';
 
 
 const MovieTable = ({currentMovies, onDelete, onLike, onSort, sortColumn}) => {
+  const user=getUser();
   if (currentMovies.length == 0)
     return <p>nothing to show here</p>
 
@@ -14,6 +16,7 @@ const MovieTable = ({currentMovies, onDelete, onLike, onSort, sortColumn}) => {
     else
       return null;  
   }
+  
   return <div>
     <table className="table">
   <thead>
@@ -23,7 +26,7 @@ const MovieTable = ({currentMovies, onDelete, onLike, onSort, sortColumn}) => {
       <th className="col" onClick={()=>onSort('numberInStock')}>Stock<span className='mx-2'>{renderArrow('numberInStock')}</span></th>
       <th className="col" onClick={()=>onSort('dailyRentalRate')}>Rate<span className='mx-2'>{renderArrow('dailyRentalRate')}</span></th>
       <th className="col"></th>
-      <th className="col"></th>
+      {user && user.isAdmin && <th className="col"></th>}
     </tr>
   </thead>
   <tbody>
@@ -33,7 +36,7 @@ const MovieTable = ({currentMovies, onDelete, onLike, onSort, sortColumn}) => {
       <td>{movie.numberInStock}</td>
       <td>{movie.dailyRentalRate}</td>
       <td><HeartIcon onPress={()=>onLike(movie._id)} isLiked={movie.liked}/></td>
-      <td><button className="btn btn-danger" onClick={()=>onDelete(movie._id)}>Delete</button></td>
+      {user && user.isAdmin && <td><button className="btn btn-danger" onClick={()=>onDelete(movie._id)}>Delete</button></td>}
     </tr>)}
   </tbody>
 </table>

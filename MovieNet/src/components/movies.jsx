@@ -6,10 +6,10 @@ import paginate from '../utils/paginate';
 import Pagination from '../components/pagination';
 import SearchBox from '../components/common/searchBox';
 import _ from 'lodash'
-import axios from 'axios'
+import http from '../services/httpService';
 import { genresAPI, moviesAPI } from '../services/apiEndpoints';
 
-const Movies = () => {
+const Movies = ({user}) => {
   const navigate = useNavigate()
 
   const pageSize = 4;
@@ -31,8 +31,10 @@ const Movies = () => {
   const currentMovies = paginate(sortedMovies, currentPage, pageSize)
 
   const handleDelete = (id) => {
-    setAllMovies(allMovies.filter(movie => movie._id != id))
-    axios.delete(moviesAPI+'/'+id)
+    // setAllMovies(allMovies.filter(movie => movie._id != id))
+    http.delete(moviesAPI+'/'+id)
+      .then(()=>setAllMovies(allMovies.filter(movie => movie._id != id)))
+      .catch((err)=>console.log(err.response.data))
   }
 
   const handleLike = (id) => {
@@ -65,11 +67,11 @@ const Movies = () => {
   }
 
   useEffect(()=>{
-    axios.get(genresAPI)
+    http.get(genresAPI)
       .then(res=>setGenres([{_id:'0', name:'All Genre'},...res.data]))
       .catch(err=>console.log(err.messaage))
 
-    axios.get(moviesAPI)
+    http.get(moviesAPI)
       .then(res=>setAllMovies([...res.data]))
       .catch(err=>console.log(err.messaage)) 
   },[])  
@@ -82,10 +84,12 @@ const Movies = () => {
     </div>
 
     <div className='col mx-4'>
-      <div className='my-3' onClick={() => navigate('/movies/new')}><button className="btn btn-primary">New movie</button></div>
+
+      {user && <div className='my-3' onClick={() => navigate('/movies/new')}><button className="btn btn-primary">New movie</button></div>}
+
       <p>Showing {filteredMovies.length} movies in database</p>
       <SearchBox placeholder='Search...' value={currentSearch} onChange={handleSearch}/>
-      <MovieTable currentMovies={currentMovies} onDelete={handleDelete} onLike={handleLike} onSort={handleSort} sortColumn={sortColumn} />
+      <MovieTable currentMovies={currentMovies} onDelete={handleDelete} onLike={handleLike} onSort={handleSort} sortColumn={sortColumn} user={user}/>
 
       <Pagination totalItems={filteredMovies.length} pageSize={pageSize} onPagination={handlePagination} currentPage={currentPage} />
     </div>

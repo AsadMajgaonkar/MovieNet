@@ -1,6 +1,6 @@
 
 function admin(req,res,next){
-    if(!req.user.isAdmin) return res.status(400).send('forbidden access');
+    if(!req.user.isAdmin) return res.status(403).send('forbidden access');
     next();
 }
 
