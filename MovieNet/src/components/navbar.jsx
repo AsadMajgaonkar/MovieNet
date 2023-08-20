@@ -8,8 +8,8 @@ const Navbar = ({ user }) => {
             <div className="mx-auto navbar-nav">
                 <NavLink className='nav-link navbar-brand' to='/'>Vidly</NavLink>
                 <NavLink className="nav-link" to='/movies'>Movies</NavLink>
-                <NavLink className="nav-link" to='/customers'>Customer</NavLink>
-                <NavLink className="nav-link" to='/rentals'>Rental</NavLink>
+                
+                
                 {!user &&
                     <>
                         <NavLink className="nav-link" to='/login'>Login</NavLink>
@@ -18,6 +18,8 @@ const Navbar = ({ user }) => {
                 }
                 {user &&
                     <>
+                        {user.isAdmin && <NavLink className="nav-link" to='/customers'>Customer</NavLink>}
+                        <NavLink className="nav-link" to='/rentals'>Rental</NavLink>
                         <NavLink className="nav-link" to='/profile'>{user.name}</NavLink>
                         <NavLink className="nav-link" to='/logout'>Logout</NavLink>
                     </>

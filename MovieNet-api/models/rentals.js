@@ -2,17 +2,16 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const {customerSchema, Customer} = require('../routes/customerAPI');
-const {movieSchema, Movie} = require('./movie');
+// const {customerSchema, Customer} = require('../routes/customerAPI');
+// const {movieSchema, Movie} = require('./movie');
+const {User} = require('../models/user')
 
 const rentalSchema = new mongoose.Schema({
     customer:{
         referenced:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'customers'
+            ref:'users'
         },
-        phone:Number,
-        isGold:Boolean,
         name:String
     },
     movie:{
@@ -20,8 +19,11 @@ const rentalSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:'movies'
         },
-        title:String,
-        daily_rental_rate:Number
+        title:String
+    },
+    date:{
+        type:Date,
+        default:Date
     }
 })
 const Rental = mongoose.model('rentals', rentalSchema);

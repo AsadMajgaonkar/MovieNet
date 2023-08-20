@@ -29,8 +29,14 @@ const App = () => {
   },[])
 
   function authenticate(component){
-    if(user) return component
+    if(getUser()) return component
     else return <Navigate to='/login'/>
+  }
+
+  function auth_admin(component){
+    const user = getUser()
+    if(user&& user.isAdmin) return component
+    else return <Navigate to='/*'/>
   }
   
   return <div>
@@ -40,11 +46,11 @@ const App = () => {
         <Route path='/' element={<Navigate to='/movies' />} />
         <Route path='/movies' element={<Movies user={user}/>} />
         <Route path='/movies/:id' element={authenticate(<MoviesForm/>)} />
-        <Route path='/customers' element={<Customers />} />
-        <Route path='/rentals' element={<Rentals />} />
+        <Route path='/customers' element={auth_admin(<Customers/>)} />
+        <Route path='/rentals' element={authenticate(<Rentals/>)} />
         <Route path='/login' element={<LoginForm />} />
         <Route path='/logout' element={<Logout />} />
-        <Route path='/profile' element={authenticate(<Profile />)} />
+        <Route path='/profile' element={authenticate(<Profile/>)} />
         <Route path='/register' element={<Register />} />
         <Route path='/not-found' element={<NotFound />} />
         <Route path='*' element={<Navigate to='not-found' />} />

@@ -6,9 +6,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/authorisation');
 
-router.get('/me', async(req,res)=>{ //auth
-        const user = await User.findById(req.user._id);
-        res.send(_.pick(user,['name','email']));
+router.get('/', async(req,res)=>{ 
+    const user = await User.find();
+    res.send(user);
 })
 
 router.post('/', async(req,res)=>{

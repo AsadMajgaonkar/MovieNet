@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { genresAPI, moviesAPI } from '../services/apiEndpoints';
 import http from '../services/httpService';
+import { getUser } from '../services/authService';
+import { rentalAPI } from '../services/rentalsServices';
 
 let movies = []
 let genres = []
@@ -21,7 +23,7 @@ const MoviesForm = () => {
         setRefresh(true)
 
         if (id == 'new') return;
-        
+
         let updateMovie = movies.find(movie => movie._id == id)
         if (!updateMovie) return navigate('/not-found')
 
@@ -72,6 +74,18 @@ const MoviesForm = () => {
         doSubmit();
     }
 
+    const handleRentals = () => {
+        try{
+            const {_id:customer_id} = getUser();
+            const movie_id = movie._id
+            http.post(rentalAPI, {customer_id,movie_id})
+            
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
     return <div className=' d-flex flex-column '>
         <div className='col-8 mx-auto'>
             <form>
@@ -101,7 +115,10 @@ const MoviesForm = () => {
                     <label className="form-label">Rate</label>
                     <input type="number" className="form-control" value={movie.dailyRentalRate} placeholder='Out of 5' onChange={(event) => setMovie({ ...movie, dailyRentalRate: event.target.value })} />
                 </div>
+                <div className='d-flex justify-content-between'>
                 <button type='submit' className="btn btn-primary" onClick={(event) => handleSubmit(event)}>Save</button>
+                {movie._id && <button type='button' className="btn btn-warning" onClick={() => handleRentals()}>Rent</button>}
+                </div>
             </form>
         </div>
     </div>
