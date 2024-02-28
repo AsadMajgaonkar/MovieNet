@@ -36,7 +36,7 @@ const App = () => {
   function auth_admin(component){
     const user = getUser()
     if(user&& user.isAdmin) return component
-    else return <Navigate to='/*'/>
+    else return <Navigate to='/movies'/>
   }
   
   return <div>
