@@ -44,17 +44,16 @@ const App = () => {
     <div className='content'>
       <Routes>
         <Route path='/' element={<Navigate to='/movies' />} />
-        {/* <Route path='/' element={<Movies user={user}/>} /> */}
         <Route path='/movies' element={<Movies user={user}/>} />
         <Route path='/movies/:id' element={authenticate(<MoviesForm/>)} />
         <Route path='/customers' element={auth_admin(<Customers/>)} />
         <Route path='/rentals' element={authenticate(<Rentals/>)} />
-        <Route path='https://movienet-shop.onrender.com/login' element={<LoginForm />} />
+        <Route path='/login' element={<LoginForm />} />
         <Route path='/logout' element={<Logout />} />
         <Route path='/profile' element={authenticate(<Profile/>)} />
         <Route path='/register' element={<Register />} />
         <Route path='/not-found' element={<NotFound />} />
-        {/* <Route path='/*' element={<Navigate to='not-found' />} />  */}
+        <Route path='/*' element={<Navigate to='not-found' />} /> 
       </Routes>
     </div>
   </div>
