@@ -44,6 +44,7 @@ const App = () => {
     <div className='content'>
       <Routes>
         <Route path='/' element={<Navigate to='/movies' />} />
+        {/* <Route path='/' element={<Movies user={user}/>} /> */}
         <Route path='/movies' element={<Movies user={user}/>} />
         <Route path='/movies/:id' element={authenticate(<MoviesForm/>)} />
         <Route path='/customers' element={auth_admin(<Customers/>)} />

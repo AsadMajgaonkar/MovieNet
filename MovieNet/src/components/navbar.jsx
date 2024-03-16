@@ -6,7 +6,8 @@ const Navbar = ({ user }) => {
     return <div className='mb-4'>
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="mx-auto navbar-nav">
-                <NavLink className='nav-link navbar-brand' to='/'>MovieNet</NavLink>
+                {/* <NavLink className='nav-link navbar-brand' to='/'>MovieNet</NavLink> */}
+                <NavLink className='navbar-brand'>MovieNet</NavLink>
                 <NavLink className="nav-link" to='/movies'>Movies</NavLink>
                 
                 
