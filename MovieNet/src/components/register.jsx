@@ -33,7 +33,7 @@ const Register = () => {
         try{
             const response = await createUser(account);
             loginWithJwt(response);
-            window.location = '/'
+            // window.location = '/'    // code for redirect
         }
         catch(err){
             if(err && err.response.status==400){
