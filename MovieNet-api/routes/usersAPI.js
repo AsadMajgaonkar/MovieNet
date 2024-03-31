@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/authorisation');
 
+router.get('/test', async(req,res)=>{ 
+    res.send("in testing mode");
+})
+
 router.get('/', async(req,res)=>{ 
     const user = await User.find();
     res.send(user);
