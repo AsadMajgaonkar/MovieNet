@@ -7,6 +7,13 @@ const express = require('express');
 const cors = require('cors')
 
 module.exports = function(app){
+
+    app.use(function (request, response, next) {
+        response.header("Access-Control-Allow-Origin", "*");
+        response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+      });
+      
     app.use(express.json())
 
     // app.use(cors())
@@ -17,6 +24,8 @@ module.exports = function(app){
       };
       
       app.use(cors(corsOptions));
+
+      
       
     app.use('/api/genres', genreRoute);
     app.use('/api/movies', moviesAPI);
