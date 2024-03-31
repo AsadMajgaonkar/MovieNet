@@ -11,9 +11,11 @@ import Register from './components/register'
 import MoviesForm from './components/moviesForm'
 import Logout from './components/logout'
 import Profile from './components/profile'
+// import customModal from './components/modal'
 
 const App = () => {
   const [user, setUser] = useState()
+  // const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
     try {
@@ -24,6 +26,7 @@ const App = () => {
         email:email,
         isAdmin:isAdmin
       })
+      // setShowModal(true);
     }
     catch (err) { }
   },[])
@@ -38,8 +41,12 @@ const App = () => {
     if(user&& user.isAdmin) return component
     else return <Navigate to='/movies'/>
   }
+
+  // const closeModal = () => {
+  //   setShowModal(false);
+  // };
   
-  return <div>
+  return <div>  
     <Navbar user={user}/>
     <div className='content'>
       <Routes>
@@ -56,6 +63,7 @@ const App = () => {
         <Route path='/*' element={<Navigate to='not-found' />} /> 
       </Routes>
     </div>
+    {/* <customModal isOpen={showModal} closeModal={closeModal} /> */}
   </div>
 }
 

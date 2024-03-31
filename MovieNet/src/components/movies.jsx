@@ -19,6 +19,7 @@ const Movies = ({user}) => {
   const [currentGenre, setCurrentGenre] = useState()
   const [currentSearch, setCurrentSearch] = useState('')
   const [sortColumn, setSortColumn] = useState({ path: 'title', order: 'asc' })
+  const [loading, setLoading] = useState(true);
 
   let filteredMovies;
   if(currentSearch)
@@ -67,16 +68,32 @@ const Movies = ({user}) => {
   }
 
   useEffect(()=>{
-    http.get(genresAPI)
-      .then(res=>setGenres([{_id:'0', name:'All Genre'},...res.data]))
-      .catch(err=>console.log(err.messaage))
+    // http.get(genresAPI)
+    //   .then(res=>setGenres([{_id:'0', name:'All Genre'},...res.data]))
+    //   .catch(err=>console.log(err.messaage))
 
-    http.get(moviesAPI)
-      .then(res=>setAllMovies([...res.data]))
-      .catch(err=>console.log(err.messaage)) 
+    // http.get(moviesAPI)
+    //   .then(res=>setAllMovies([...res.data]))
+    //   .catch(err=>console.log(err.messaage)) 
+
+    const fetchGenres = http.get(genresAPI);   
+    const fetchMovies = http.get(moviesAPI);
+
+    Promise.all([fetchGenres, fetchMovies])
+      .then((res)=>{
+        setGenres([{_id:'0', name:'All Genre'},...res[0].data])
+        setAllMovies([...res[1].data])
+        setLoading(false);
+      })
+      .catch(err=>{
+        console.log(err.message)
+        setLoading(false);
+      })
   },[])  
 
-  return <div className='row'>
+  return <div>
+    {loading ? 
+    <p>Backend starting please wait</p> : <div className='row'>
     <div className='col-2'>
       <ListGroup items={genres}
         onItemSelect={filterGenre}
@@ -93,6 +110,8 @@ const Movies = ({user}) => {
 
       <Pagination totalItems={filteredMovies.length} pageSize={pageSize} onPagination={handlePagination} currentPage={currentPage} />
     </div>
+  </div>}
+    
   </div>
 }
 
