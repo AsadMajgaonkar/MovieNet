@@ -2,8 +2,8 @@
 import jwtDecode from 'jwt-decode';
 import http from './httpService';
 
-// const authAPI = 'https://movienet-api.onrender.com/api/auth'
-const authAPI = 'http://localhost:3000/api/auth'
+const authAPI = 'https://movienet-api.onrender.com/api/auth'
+// const authAPI = 'http://localhost:3000/api/auth'
 
 export async function loginUser(user){
     const response = await http.post(authAPI,user)
