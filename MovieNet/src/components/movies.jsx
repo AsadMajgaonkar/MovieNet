@@ -93,7 +93,7 @@ const Movies = ({user}) => {
 
   return <div>
     {loading ? 
-    <p>Backend starting please wait</p> : <div className='row'>
+    <div className='col-6 mx-auto'><p className='h6 font-weight-bold text-center'>Backend starting...please wait. If you are visiting the website for the first time, kindly wait 15-30 seconds. As the server is hosted on a free hosting platform, it takes time to load initially.</p></div>: <div className='row'>
     <div className='col-2'>
       <ListGroup items={genres}
         onItemSelect={filterGenre}
